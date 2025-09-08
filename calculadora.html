@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Estacionamento</title>
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+  <div class="container">
+    <h2>Calculadora de Estacionamento</h2>
+    <label for="entrada">Hora de entrada:</label>
+    <input type="datetime-local" id="entrada">
+
+    <label for="saida">Hora de saída:</label>
+    <input type="datetime-local" id="saida">
+
+    <label for="patio">Selecione o pátio:</label>
+    <select id="patio">
+      <option value="padrao">Pátio Padrão (Exemplo Antigo)</option>
+      <option value="pr01">PR01 - Presidente Faria</option>
+      <option value="pr02">PR02 - Ivo Leão</option>
+      <option value="pr03">PR03 - Getulio Vargas</option>
+      <option value="pr04">PR04 - Treze de Maio</option>
+      <option value="pr05">PR05 - Mateus Leme</option>
+      <!-- Você pode adicionar mais pátios aqui conforme a necessidade -->
+    </select>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div class="resultado" id="resultado"></div>
+  </div>
+
+  <!-- Link para o arquivo JavaScript externo -->
+  <!-- É uma boa prática colocar o script no final do <body> para que o HTML seja carregado primeiro -->
+  <script src="script.js"></script>
+</body>
+</html>
