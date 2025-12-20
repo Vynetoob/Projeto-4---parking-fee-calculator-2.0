@@ -188,4 +188,7 @@ const pricingTables = {
       <p><strong>Diárias cobradas:</strong> ${displayDiariasCobradas}</p>
       <p><strong>Valor a pagar:</strong> R\$ ${valorTotal.toFixed(2)}</p>
     `;
+    setTimeout(() => {
+    document.getElementById("resultado").innerHTML = "Insira os horários acima para calcular.";
+  }, 60000); // 1 minuto
   }

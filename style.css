@@ -1,53 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0; /* Remove default body margin */
-  }
-  .container {
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    width: 400px;
-    max-width: 90%; /* Responsive adjustment */
-  }
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #2c3e50;
-  }
-  label {
-    display: block;
-    margin: 10px 0 5px;
-    font-weight: bold;
-  }
-  input, select, button {
-    width: calc(100% - 16px); /* Adjust for padding */
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-sizing: border-box; /* Include padding in width */
-  }
-  button {
-    background: #27ae60;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    width: 100%; /* Full width */
-  }
-  button:hover {
-    background: #219150;
-  }
-  .resultado {
-    background: #ecf0f1;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-    word-wrap: break-word; /* Prevents overflow for long text */
-  }
+  font-family: 'Space Grotesk', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #381064, #901466, #A5215F, #b05601);
+  background-size: 200% 1%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.card {
+  background:rgba(242, 235, 232, 0.8);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  padding: 3rem 2rem;
+  width: 420px;
+  text-align: center;
+}
+
+.card h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #3B2457;
+  margin-bottom: 0.5rem;
+}
+
+.divider {
+  width: 60px;
+  height: 4px;
+  background: #E93D8B;
+  border-radius: 2px;
+  margin: 0.75rem auto 1.5rem;
+}
+
+.input-group {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #3B2457;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
+  font-family: inherit;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(90deg, #E93D8B, #F1951C);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+.resultado {
+  margin-top: 2rem;
+  border-radius: 14px;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #3B235B;
+  text-align: center;
+}
