@@ -1,194 +1,86 @@
-// Objeto que armazena as regras de preço para cada pátio
-const pricingTables = {
-    // Pátio Padrão (Exemplo Antigo)
-    "padrao": {
-      "min_rates": [ // Regras para cálculo por minutos
-        { limit: 30, price: 6 },
-        { limit: 60, price: 12 },
-        { limit: 90, price: 16 }
-      ],
-      "extra_rate_per_block": 3,      // R\$ 3,00 por bloco
-      "block_minutes": 15,            // Tamanho do bloco em minutos (e.g., 15 minutos)
-      "daily_value": 40,              // Valor da diária
-      "daily_minutes": 1440           // 24 * 60 = minutos por diária
-    },
-    // PR01 - Presidente Faria
-    "pr01": {
-      "min_rates": [
-        { limit: 30, price: 6 },
-        { limit: 60, price: 12 },
-        { limit: 120, price: 15 }, // 2:00h
-        { limit: 240, price: 20 }, // 4:00h
-        { limit: 720, price: 30 }  // 12:00h
-      ],
-      "extra_rate_per_block": 3,
-      "block_minutes": 15,
-      "daily_value": 40,
-      "daily_minutes": 1440
-    },
-    // PR02 - Ivo Leão (Mesmas regras do padrão)
-    "pr02": {
-      "min_rates": [
-        { limit: 30, price: 6 },
-        { limit: 60, price: 12 },
-        { limit: 90, price: 16 }
-      ],
-      "extra_rate_per_block": 3,
-      "block_minutes": 15,
-      "daily_value": 40,
-      "daily_minutes": 1440
-    },
-    // PR03 - Getulio Vargas
-    "pr03": {
-      "min_rates": [
-        { limit: 30, price: 5 },
-        { limit: 60, price: 10 },
-        { limit: 120, price: 14 }, // 2:00h
-        { limit: 240, price: 16 }, // 4:00h
-        { limit: 480, price: 20 }  // 8:00h
-      ],
-      "extra_rate_per_block": 0.75,
-      "block_minutes": 30,
-      "daily_value": 45, // Diária máxima de 45,00
-      "daily_minutes": 1440
-    },
-    // PR04 - Treze de Maio (sem cobrança adicional por bloco após o último limite de minutos)
-    "pr04": {
-      "min_rates": [
-        { limit: 30, price: 5 },
-        { limit: 60, price: 10 },
-        { limit: 360, price: 15 }, // 6:00h
-        { limit: 720, price: 20 }  // 12:00h
-      ],
-      "daily_value": 40,
-      "daily_minutes": 1440
-    },
-    // PR05 - Mateus Leme
-    "pr05": {
-      "min_rates": [
-        { limit: 30, price: 5 },
-        { limit: 60, price: 10 },
-        { limit: 120, price: 12 }, // 2:00h
-        { limit: 240, price: 15 }, // 4:00h
-        { limit: 480, price: 20 }, // 8:00h
-        { limit: 720, price: 25 }  // 12:00h
-      ],
-      "extra_rate_per_block": 2.50,
-      "block_minutes": 30,
-      "daily_value": 35, // Diária máxima de 35,00
-      "daily_minutes": 1440
-    }
-  };
-  
-  // Função auxiliar para calcular a tarifa baseada nos minutos,
-  // usando as regras específicas do pátio.
-  function calcularTarifaPorMinutos(minutos, minRates, extraRatePerBlock, blockMinutes) {
-    if (minutos <= 0) {
-      return 0;
-    }
-  
-    // Procura o valor dentro dos limites definidos
-    for (let i = 0; i < minRates.length; i++) {
-      if (minutos <= minRates[i].limit) {
-        return minRates[i].price;
-      }
-    }
-  
-    // Se o tempo for maior que o último limite definido (e.g., > 90 minutos)
-    const lastLimit = minRates[minRates.length - 1].limit;
-    const lastPrice = minRates[minRates.length - 1].price;
+// script.js
+
+// Carrega pátios do banco de dados na nuvem ao abrir a página
+async function carregarPatiosNoSelect() {
+    const select = document.getElementById('patio');
     
-    // Se houver uma regra de cobrança adicional por bloco
-    if (extraRatePerBlock !== undefined && blockMinutes !== undefined && minutos > lastLimit) {
-      const minutosExtras = minutos - lastLimit;
-      // Math.ceil garante que qualquer fração do bloco seja contada como um bloco completo
-      const numBlocks = Math.ceil(minutosExtras / blockMinutes);
-      return lastPrice + numBlocks * extraRatePerBlock;
-    } else {
-      // Se não houver regra de cobrança adicional por bloco, retorna o último preço
-      return lastPrice;
+    const { data: patios, error } = await window.supabase
+        .from('patios')
+        .select('*')
+        .order('nome', { ascending: true });
+
+    if (error) {
+        console.error("Erro ao carregar:", error);
+        select.innerHTML = '<option>Erro ao carregar</option>';
+        return;
     }
-  }
-  
-  function calcular() {
-    const entradaInput = document.getElementById("entrada").value;
-    let saidaInput = document.getElementById("saida").value;
-    const patioSelecionado = document.getElementById("patio").value;
-  
-    // Obtém as regras de preço para o pátio selecionado
-    const currentPatioRules = pricingTables[patioSelecionado];
-    if (!currentPatioRules) {
-      alert("Pátio selecionado não encontrado nas regras de preço.");
-      return;
+
+    select.innerHTML = patios.length ? '' : '<option value="">Nenhum pátio cadastrado</option>';
+    patios.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.nome;
+        select.appendChild(opt);
+    });
+
+    // Guardamos os dados localmente para o cálculo não precisar ir na internet de novo
+    window.patiosCache = patios;
+}
+
+window.onload = carregarPatiosNoSelect;
+
+function calcularTarifaBase(minutos, rules) {
+    const { min_rates, extra_rate_per_block, block_minutes } = rules;
+    
+    // 1. Verifica faixas de minutos
+    for (let r of min_rates) {
+        if (minutos <= r.limit) return r.price;
     }
-  
-    // Desestrutura as regras para facilitar o uso
-    const { min_rates, extra_rate_per_block, block_minutes, daily_value, daily_minutes } = currentPatioRules;
-  
-    if (!entradaInput) {
-      alert("Preencha a hora de entrada!");
-      return;
-    }
-  
-    const entradaDate = new Date(entradaInput);
-    let saidaDate;
-  
-    if (!saidaInput) {
-      saidaDate = new Date();
-      // Para garantir que a data atual seja refletida no input se o usuário não preencheu
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = (now.getMonth() + 1).toString().padStart(2, '0');
-      const day = now.getDate().toString().padStart(2, '0');
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      document.getElementById("saida").value = `${year}-${month}-${day}T${hours}:${minutes}`;
-    } else {
-      saidaDate = new Date(saidaInput);
-    }
-  
-    const diffMs = saidaDate.getTime() - entradaDate.getTime();
-  
-    if (diffMs < 0) {
-      alert("A hora de saída não pode ser antes da hora de entrada!");
-      return;
-    }
-  
-    // Tempo total em minutos (arredondado para cima, já que não há tolerância)
-    const totalDiffMinutes = Math.ceil(diffMs / 60000); // 60000 ms em 1 minuto
-  
-    let valorTotal = 0;
-    let displayDiariasCobradas = 0; // Para exibição no resultado
-  
-    if (totalDiffMinutes <= 0) {
-      valorTotal = 0;
-      displayDiariasCobradas = 0;
-    } else if (totalDiffMinutes <= daily_minutes) { // Até 24 horas (inclusive)
-      // Aplica a tabela por minutos e limita o valor ao daily_value
-      valorTotal = Math.min(calcularTarifaPorMinutos(totalDiffMinutes, min_rates, extra_rate_per_block, block_minutes), daily_value);
-      displayDiariasCobradas = 1; // Considera como 1 diária para exibição, mesmo que seja por minutos
-    } else if (totalDiffMinutes < (2 * daily_minutes)) { // De 24h01m até 47h59m
-      valorTotal = daily_value; // Valor fixo da primeira diária
-      displayDiariasCobradas = 1; // Continua sendo 1 diária
-    } else { // De 48h00m em diante
-      // Calcula o número de diárias com base nos blocos completos de 24 horas
-      displayDiariasCobradas = Math.floor(totalDiffMinutes / daily_minutes);
-      valorTotal = displayDiariasCobradas * daily_value;
+
+    // 2. Se passar da última faixa, aplica o adicional por bloco
+    const lastRule = min_rates[min_rates.length - 1];
+    if (extra_rate_per_block > 0 && block_minutes > 0) {
+        const excesso = minutos - lastRule.limit;
+        const blocos = Math.ceil(excesso / block_minutes);
+        return lastRule.price + (blocos * extra_rate_per_block);
     }
     
-    // Cálculo para exibição do tempo total
-    const displayHours = Math.floor(totalDiffMinutes / 60);
-    const displayMinutes = totalDiffMinutes % 60;
-  
-    // Exibir resultado
-    const resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = `
-      <p><strong>Pátio:</strong> ${document.getElementById("patio").options[document.getElementById("patio").selectedIndex].text}</p>
-      <p><strong>Tempo total:</strong> ${displayHours}h ${displayMinutes}min</p>
-      <p><strong>Diárias cobradas:</strong> ${displayDiariasCobradas}</p>
-      <p><strong>Valor a pagar:</strong> R\$ ${valorTotal.toFixed(2)}</p>
+    return lastRule.price;
+}
+
+function calcular() {
+    const entradaVal = document.getElementById("entrada").value;
+    const patioId = document.getElementById("patio").value;
+    const rules = window.patiosCache?.find(p => p.id == patioId);
+
+    if (!entradaVal || !rules) return alert("Preencha a entrada e selecione um pátio!");
+
+    const saidaVal = document.getElementById("saida").value;
+    const saidaDate = saidaVal ? new Date(saidaVal) : new Date();
+    const diffMin = Math.ceil((saidaDate - new Date(entradaVal)) / 60000);
+
+    if (diffMin < 0) return alert("Saída antes da entrada!");
+
+    let valor = 0, diarias = 0;
+
+    if (diffMin > 0) {
+        if (diffMin <= rules.daily_minutes) { // Até 24h
+            const tarifaMinutos = calcularTarifaBase(diffMin, rules);
+            valor = Math.min(tarifaMinutos, rules.daily_value);
+            diarias = 1;
+        } else if (diffMin < (2 * rules.daily_minutes)) { // 24h a 48h
+            valor = rules.daily_value;
+            diarias = 1;
+        } else { // Acima de 48h (cobra por blocos de 24h)
+            diarias = Math.floor(diffMin / rules.daily_minutes);
+            valor = diarias * rules.daily_value;
+        }
+    }
+
+    document.getElementById("resultado").innerHTML = `
+        <p><strong>Pátio:</strong> ${rules.nome}</p>
+        <p><strong>Tempo:</strong> ${Math.floor(diffMin/60)}h ${diffMin%60}min</p>
+        <p><strong>Diárias:</strong> ${diarias}</p>
+        <p><strong>Valor:</strong> R$ ${valor.toFixed(2)}</p>
     `;
-    setTimeout(() => {
-    document.getElementById("resultado").innerHTML = "Insira os horários acima para calcular.";
-  }, 60000); // 1 minuto
-  }
+}

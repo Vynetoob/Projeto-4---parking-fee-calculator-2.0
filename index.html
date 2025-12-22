@@ -8,7 +8,10 @@
 </head>
 <body>
   <div class="card">
-    <h1>Calculadora de Estacionamento</h1>
+    <div class="header-main">
+      <h1>Calculadora</h1>
+      <a href="gestao.html" class="btn-config">⚙️ Gestão</a>
+    </div>
 
     <div class="input-group">
       <label for="entrada">Hora de Entrada</label>
@@ -23,22 +26,20 @@
     <div class="input-group">
       <label for="patio">Selecione o Pátio</label>
       <select id="patio">
-        <option value="padrao">Pátio Padrão (Exemplo Antigo)</option>
-        <option value="pr01">PR01 - Presidente Faria</option>
-        <option value="pr02">PR02 - Ivo Leão</option>
-        <option value="pr03">PR03 - Getulio Vargas</option>
-        <option value="pr04">PR04 - Treze de Maio</option>
-        <option value="pr05">PR05 - Mateus Leme</option>
+        <option value="">Carregando pátios...</option>
       </select>
     </div>
 
-    <button onclick="calcular()">Calcular</button>
+    <button class="btn-calc" onclick="calcular()">Calcular Tarifa</button>
 
     <div class="resultado" id="resultado">
       Insira os horários acima para calcular.
     </div>
   </div>
 
+  <!-- ORDEM OBRIGATÓRIA DOS SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
