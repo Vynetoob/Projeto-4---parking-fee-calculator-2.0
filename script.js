@@ -1,9 +1,14 @@
-// script.js
+// script.js - Lógica da Calculadora e Avisos de Eventos
 
-// Carrega pátios do banco de dados na nuvem ao abrir a página
+// 1. FUNÇÃO DE INICIALIZAÇÃO ÚNICA (Carrega tudo ao abrir a página)
+window.onload = async () => {
+    await carregarPatiosNoSelect();
+    await verificarEventosHoje();
+};
+
+// 2. CARREGAR PÁTIOS NO SELECT
 async function carregarPatiosNoSelect() {
     const select = document.getElementById('patio');
-    
     const { data: patios, error } = await window.supabase
         .from('patios')
         .select('*')
@@ -11,7 +16,6 @@ async function carregarPatiosNoSelect() {
 
     if (error) {
         console.error("Erro ao carregar:", error);
-        select.innerHTML = '<option>Erro ao carregar</option>';
         return;
     }
 
@@ -23,28 +27,91 @@ async function carregarPatiosNoSelect() {
         select.appendChild(opt);
     });
 
-    // Guardamos os dados localmente para o cálculo não precisar ir na internet de novo
     window.patiosCache = patios;
 }
 
-window.onload = carregarPatiosNoSelect;
+// 3. VERIFICAR SE HÁ EVENTOS HOJE E EXIBIR BALÃO OU MENSAGEM
+async function verificarEventosHoje() {
+    const container = document.getElementById('avisosEventos');
+    
+    // Obtém a data de hoje no formato YYYY-MM-DD
+    const hoje = new Date().toLocaleDateString('en-CA'); 
 
+    const { data: eventos, error } = await window.supabase
+        .from('eventos')
+        .select('*')
+        .eq('data_evento', hoje)
+        .order('horario_evento', { ascending: true });
+
+    // SE NÃO HOUVER EVENTOS, MOSTRA A MENSAGEM "Hoje não tem evento"
+    if (error || !eventos || eventos.length === 0) {
+        container.innerHTML = `
+            <div class="sem-evento-msg">
+                Hoje não tem evento
+            </div>
+        `;
+        return;
+    }
+
+    // SE HOUVER EVENTOS, RENDERIZA OS BALÕES NA ORDEM DE HORÁRIO
+    container.innerHTML = eventos.map(e => {
+        const d = new Date(e.data_evento + 'T00:00:00');
+        const dia = d.getDate().toString().padStart(2, '0');
+        const mes = d.toLocaleString('pt-BR', { month: 'short' }).toUpperCase().replace('.', '');
+
+        return `
+            <div class="aviso-balao" id="balao-${e.id}">
+                <div class="data-quadrado-mini">
+                    <span class="dia-mini">${dia}</span>
+                    <span class="mes-mini">${mes}</span>
+                </div>
+                <div class="aviso-info">
+                    <strong>${e.nome_evento}</strong>
+                    <span>📍 ${e.patio_nome} | ⏰ ${e.horario_evento}</span>
+                </div>
+                <button class="btn-status-aviso" onclick="gerenciarStatusAviso(this, ${e.id})">
+                    CONTRATO TROCADO
+                </button>
+            </div>
+        `;
+    }).join('');
+}
+
+// 4. LÓGICA DO BOTÃO DO BALÃO (Status e Remoção)
+function gerenciarStatusAviso(btn, id) {
+    if (btn.innerText === "CONTRATO TROCADO") {
+        // Primeiro clique: Vira Evento Encerrado (Verde)
+        btn.innerText = "EVENTO ENCERRADO";
+        btn.classList.add('encerrado');
+    } else {
+        // Segundo clique: O balão some
+        const balao = document.getElementById(`balao-${id}`);
+        balao.style.opacity = '0';
+        balao.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            balao.remove();
+            
+            // Verifica se era o último balão; se for, volta a mensagem de "sem evento"
+            const container = document.getElementById('avisosEventos');
+            if (container.children.length === 0) {
+                container.innerHTML = `<div class="sem-evento-msg">Hoje não tem evento</div>`;
+            }
+        }, 300);
+    }
+}
+
+// 5. LÓGICA DE CÁLCULO DA TARIFA
 function calcularTarifaBase(minutos, rules) {
     const { min_rates, extra_rate_per_block, block_minutes } = rules;
-    
-    // 1. Verifica faixas de minutos
     for (let r of min_rates) {
         if (minutos <= r.limit) return r.price;
     }
-
-    // 2. Se passar da última faixa, aplica o adicional por bloco
     const lastRule = min_rates[min_rates.length - 1];
     if (extra_rate_per_block > 0 && block_minutes > 0) {
         const excesso = minutos - lastRule.limit;
         const blocos = Math.ceil(excesso / block_minutes);
         return lastRule.price + (blocos * extra_rate_per_block);
     }
-    
     return lastRule.price;
 }
 
@@ -62,16 +129,15 @@ function calcular() {
     if (diffMin < 0) return alert("Saída antes da entrada!");
 
     let valor = 0, diarias = 0;
-
     if (diffMin > 0) {
-        if (diffMin <= rules.daily_minutes) { // Até 24h
+        if (diffMin <= rules.daily_minutes) {
             const tarifaMinutos = calcularTarifaBase(diffMin, rules);
             valor = Math.min(tarifaMinutos, rules.daily_value);
             diarias = 1;
-        } else if (diffMin < (2 * rules.daily_minutes)) { // 24h a 48h
+        } else if (diffMin < (2 * rules.daily_minutes)) {
             valor = rules.daily_value;
             diarias = 1;
-        } else { // Acima de 48h (cobra por blocos de 24h)
+        } else {
             diarias = Math.floor(diffMin / rules.daily_minutes);
             valor = diarias * rules.daily_value;
         }

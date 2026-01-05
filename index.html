@@ -1,45 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Estacionamento</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Calculadora - Plano Smart Park</title>
+    <link rel="icon" type="image/png" href="imagens/favicon.png">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <div class="card">
-    <div class="header-main">
-      <h1>Calculadora</h1>
-      <a href="gestao.html" class="btn-config">⚙️ Gestão</a>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">🚗 Plano Smart Park</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-item active">Calculadora</a>
+                <a href="eventos.html" class="nav-item">Eventos</a>
+                <a href="gestao/gestao.html" class="nav-item">Configurações</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- NOVO: Layout em Colunas (Painel Esquerdo + Centro) -->
+    <div class="dashboard-layout">
+        
+        <!-- LADO ESQUERDO: Painel de Avisos -->
+        <div class="side-panel">
+            <h2 class="panel-title">Avisos de Hoje</h2>
+            <div id="avisosEventos" class="avisos-wrapper-dashboard">
+                <!-- JS renderiza os eventos ou a mensagem de vazio -->
+            </div>
+        </div>
+
+        <!-- CENTRO: Área da Calculadora -->
+        <div class="main-panel">
+            <div class="card">
+                <h1>Calculadora</h1>
+                <div class="input-group">
+                    <label>Entrada</label>
+                    <input type="datetime-local" id="entrada">
+                </div>
+                <div class="input-group">
+                    <label>Saída</label>
+                    <input type="datetime-local" id="saida">
+                </div>
+                <div class="input-group">
+                    <label>Pátio</label>
+                    <select id="patio">
+                        <option>Carregando...</option>
+                    </select>
+                </div>
+                <button class="btn-main" onclick="calcular()">Calcular Tarifa</button>
+                <div class="resultado" id="resultado">Aguardando dados...</div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="input-group">
-      <label for="entrada">Hora de Entrada</label>
-      <input type="datetime-local" id="entrada">
-    </div>
-
-    <div class="input-group">
-      <label for="saida">Hora de Saída</label>
-      <input type="datetime-local" id="saida">
-    </div>
-
-    <div class="input-group">
-      <label for="patio">Selecione o Pátio</label>
-      <select id="patio">
-        <option value="">Carregando pátios...</option>
-      </select>
-    </div>
-
-    <button class="btn-calc" onclick="calcular()">Calcular Tarifa</button>
-
-    <div class="resultado" id="resultado">
-      Insira os horários acima para calcular.
-    </div>
-  </div>
-
-  <!-- ORDEM OBRIGATÓRIA DOS SCRIPTS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

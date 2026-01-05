@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventos Próximos - Plano Smart Park</title>
+  <link rel="icon" type="image/png" href="imagens/favicon.png">
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="eventos.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">🚗 Plano Smart Park</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-item">Calculadora</a>
+        <a href="eventos.html" class="nav-item active">Eventos</a>
+        <a href="login.html" class="nav-item">Configurações</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-container">
+    <div class="eventos-wrapper">
+      
+      <!-- CABEÇALHO COM FUNDO EM DESTAQUE -->
+      <header class="eventos-header">
+        <h1>📅 Próximos Eventos</h1>
+        <p>Consulte abaixo a agenda de eventos e locais.</p>
+      </header>
+
+      <!-- LISTA DE EVENTOS (RENDERIZADA PELO JS) -->
+      <div id="listaEventos" class="eventos-list">
+        <!-- O JavaScript preencherá aqui -->
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="eventos.js"></script>
+</body>
+</html>

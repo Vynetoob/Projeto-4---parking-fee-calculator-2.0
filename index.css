@@ -1,0 +1,161 @@
+/* 4. LAYOUTS (DASHBOARD) */
+.dashboard-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 30px;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.side-panel {
+    flex: 1;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.main-panel {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+}
+
+/* 5. CARDS E TEXTOS */
+.card {
+    background: rgba(242, 235, 232, 0.95);
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #3B2457;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* 6. FORMULÁRIOS E INPUTS */
+.input-group { margin-bottom: 15px; }
+label { display: block; font-weight: bold; margin-bottom: 5px; color: #3B2457; }
+input, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+/* 7. BOTÃO CALCULADORA */
+.btn-calc {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(90deg, #E93D8B, #F1951C);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+.btn-calc:active { transform: scale(0.98); }
+
+/* 11. DASHBOARD AVISOS (INDEX.HTML) */
+.avisos-wrapper {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto 10px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px;
+}
+
+.sem-evento-msg {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    color: white;
+    padding: 30px 20px;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    font-size: 1.1rem;
+}
+
+.aviso-balao {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border-left: 6px solid #E93D8B;
+    animation: slideIn 0.5s ease;
+    transition: all 0.3s ease;
+    margin-bottom: 13px;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.data-quadrado-mini {
+    background: #3B2457;
+    color: white;
+    min-width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dia-mini { font-size: 1.2rem; font-weight: bold; line-height: 1; }
+.mes-mini { font-size: 0.6rem; font-weight: bold; opacity: 0.8; text-transform: uppercase; }
+
+.aviso-info { flex: 1; }
+.aviso-info strong { color: #3B2457; display: block; font-size: 1rem; margin-bottom: 2px; }
+.aviso-info span { color: #555; font-size: 0.85rem; }
+
+.btn-status-aviso {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 130px;
+}
+
+.btn-status-aviso.encerrado { background: #28a745; }
+
+/* 12. RESULTADOS DA CALCULADORA */
+.resultado {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #3B2457;
+    font-weight: bold;
+    padding: 15px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 15px;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+    .dashboard-layout { flex-direction: column; align-items: center; }
+    .side-panel { max-width: 100%; width: 100%; order: 2; }
+    .main-panel { order: 1; }
+}

@@ -1,0 +1,443 @@
+/* 1. FONTES E CONFIGURAÇÕES GERAIS */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* ESTILIZAÇÃO DO SCROLLBAR (SCROLL BONITO) */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3B2457;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #E93D8B;
+}
+
+/* 2. FUNDO ANIMADO E ESTRUTURA DO BODY */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #381064, #A5215F, #b05601);
+    background-size: 200% 200%;
+    animation: grad 10s infinite;
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes grad {
+    0%, 100% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+}
+
+/* 3. BARRA DE NAVEGAÇÃO SUPERIOR (NAVBAR) */
+.navbar {
+    width: 100%;
+    background: rgba(242, 235, 232, 0.98);
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+}
+
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+}
+
+.nav-logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #3B2457;
+    text-decoration: none;
+}
+
+.nav-links { display: flex; gap: 15px; }
+
+.nav-item {
+    text-decoration: none;
+    color: #3B2457;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    background: rgba(59, 36, 87, 0.05);
+}
+
+.nav-item:hover, .nav-item.active {
+    background: #3B2457;
+    color: white;
+}
+
+/* 4. LAYOUTS (DASHBOARD E GERAL) */
+.dashboard-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 30px;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.main-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.side-panel {
+    flex: 1;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.main-panel {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+}
+
+/* 5. CARDS E TEXTOS */
+.card {
+    background: rgba(242, 235, 232, 0.95);
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.card.wide { max-width: 700px; }
+
+h1 {
+    color: #3B2457;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.panel-title {
+    color: white;
+    font-size: 1.2rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
+
+/* 6. FORMULÁRIOS E INPUTS */
+.input-group { margin-bottom: 15px; }
+label { display: block; font-weight: bold; margin-bottom: 5px; color: #3B2457; }
+input, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+/* 7. SISTEMA DE BOTÕES */
+.btn-calc, .btn-main, .btn-save {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(90deg, #E93D8B, #F1951C);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.btn-calc:active, .btn-main:active { transform: scale(0.98); }
+
+.btn-cancel {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    background: #ccc;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-edit { background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.btn-del { background: #ff4757; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+/* 8. MODAIS (POPUPS) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: #F2EBE8;
+    margin: 5vh auto;
+    padding: 2rem;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+.btn-remove-modal {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+}
+
+/* 9. GESTÃO DE REGRAS DINÂMICAS */
+.regra-linha {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.btn-add, .btn-remove {
+    width: 45px;
+    border: none;
+    border-radius: 12px;
+    background: #3B2457;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+/* AJUSTE DE ALINHAMENTO DOS CARDS DE GESTÃO */
+.patio-card-item {
+    background: white;
+    padding: 18px;
+    border-radius: 18px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between; /* EMPURRA OS BOTÕES PARA A DIREITA */
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.patio-info {
+    flex: 1; /* OCUPA O ESPAÇO À ESQUERDA */
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.patio-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0; /* IMPEDE QUE OS BOTÕES SE ACHATEM */
+}
+
+/* 10. LISTAGEM DE EVENTOS (EVENTOS.HTML) */
+.eventos-container {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.evento-item {
+    background: white;
+    padding: 15px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* GARANTE ALINHAMENTO DIREITO */
+    gap: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    position: relative;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.evento-item:hover {
+    transform: translateX(5px);
+    border-color: #A5215F;
+}
+
+.data-quadrado {
+    background: #3B2457;
+    color: white;
+    min-width: 65px;
+    height: 65px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.data-quadrado .dia { font-size: 1.6rem; font-weight: bold; line-height: 1; }
+.data-quadrado .mes { font-size: 0.75rem; font-weight: bold; opacity: 0.8; text-transform: uppercase; }
+
+.evento-info { 
+    flex: 1; 
+}
+
+.nome-ev { font-weight: bold; color: #3B2457; font-size: 1.15rem; }
+.badge-patio {
+    background: #A5215F;
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.evento-detalhes { display: flex; gap: 15px; font-size: 0.9rem; color: #555; margin-top: 4px; }
+
+/* CONTAINER DE AÇÕES (COPIAR E EDITAR LADO A LADO) */
+.evento-actions {
+    display: flex;
+    flex-direction: row; 
+    gap: 8px; 
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* 11. DASHBOARD AVISOS (INDEX.HTML) */
+.avisos-wrapper {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto 10px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px;
+}
+
+.sem-evento-msg {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    color: white;
+    padding: 30px 20px;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    font-size: 1.1rem;
+}
+
+.aviso-balao {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border-left: 6px solid #E93D8B;
+    animation: slideIn 0.5s ease;
+    transition: all 0.3s ease;
+    margin-bottom: 13px;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.data-quadrado-mini {
+    background: #3B2457;
+    color: white;
+    min-width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dia-mini { font-size: 1.2rem; font-weight: bold; line-height: 1; }
+.mes-mini { font-size: 0.6rem; font-weight: bold; opacity: 0.8; text-transform: uppercase; }
+
+.aviso-info { flex: 1; }
+.aviso-info strong { color: #3B2457; display: block; font-size: 1rem; margin-bottom: 2px; }
+.aviso-info span { color: #555; font-size: 0.85rem; }
+
+.btn-status-aviso {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    min-width: 130px;
+}
+
+.btn-status-aviso.encerrado { background: #28a745; }
+
+/* 12. RESULTADOS DA CALCULADORA */
+.resultado {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #3B2457;
+    font-weight: bold;
+    padding: 15px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 15px;
+}
+
+/* 13. RESPONSIVIDADE PARA CELULAR */
+@media (max-width: 900px) {
+    .dashboard-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+    .side-panel {
+        max-width: 100%;
+        width: 100%;
+        order: 2;
+    }
+    .main-panel {
+        order: 1;
+    }
+}

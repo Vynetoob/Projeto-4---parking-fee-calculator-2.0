@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel de Controle - Smart Park</title>
+  <link rel="icon" type="image/png" href="../imagens/favicon.png">
+  <link rel="stylesheet" href="../global.css">
+  <link rel="stylesheet" href="gestao.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">🚗 Plano Smart Park</a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-item">Calculadora</a>
+        <a href="../eventos.html" class="nav-item">Eventos</a>
+        <button onclick="fazerLogout()" class="btn-logout">Sair</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <button class="side-btn active" id="btnTabPatio" onclick="trocarAba('patio')">🅿️ Pátios</button>
+      <button class="side-btn" id="btnTabEvento" onclick="trocarAba('evento')">📅 Eventos</button>
+    </aside>
+
+    <main class="content-area">
+      <section id="secaoPatio" class="tab-content">
+        <div class="header-content">
+          <h1>Gestão de Pátios</h1>
+          <button class="btn-main" onclick="abrirModalPatio()" style="width: auto;">+ Novo Pátio</button>
+        </div>
+        <div id="listaPatios" class="list-container"></div>
+      </section>
+
+      <section id="secaoEvento" class="tab-content" style="display: none;">
+        <div class="header-content">
+          <h1>Gestão de Eventos</h1>
+          <button class="btn-main" onclick="abrirModalEvento()" style="width: auto;">+ Novo Evento</button>
+        </div>
+        <div id="listaEventosGestao" class="list-container"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL PÁTIO (ADICIONADO) -->
+  <div id="modalPatio" class="modal">
+    <div class="modal-content">
+      <h2 id="modalTitlePatio">Novo Pátio</h2>
+      <input type="hidden" id="editPatioId">
+      <label>Nome do Pátio</label>
+      <input type="text" id="nomePatio" placeholder="Ex: Pátio Central">
+      
+      <div id="regrasDinamicas">
+        <label>Regras (Tempo | Valor)</label>
+        <div class="regra-linha">
+          <input type="text" class="regra-min" placeholder="Tempo (ex: 30m)">
+          <input type="number" class="regra-val" placeholder="Valor R$">
+          <button type="button" class="btn-add" onclick="adicionarLinhaRegra()">+</button>
+        </div>
+      </div>
+
+      <label>Valor Bloco Extra (R$)</label>
+      <input type="number" id="valorExtra" placeholder="Ex: 5">
+      <label>Tempo do Bloco Extra</label>
+      <input type="text" id="tempoExtra" placeholder="Ex: 30m">
+      <label>Valor da Diária (Teto R$)</label>
+      <input type="number" id="valorDiaria" placeholder="Ex: 50">
+
+      <button class="btn-save" onclick="salvarPatio()" style="background: linear-gradient(90deg, #E93D8B, #F1951C); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 15px;">Salvar Pátio</button>
+      <button onclick="fecharModalPatio()" style="background: #666; color: white; border: none; padding: 10px; border-radius: 10px; margin-top: 10px; cursor: pointer; width: 100%;">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- MODAL EVENTO (ADICIONADO) -->
+  <div id="modalEvento" class="modal">
+    <div class="modal-content">
+      <h2 id="modalTitleEvento">Novo Evento</h2>
+      <input type="hidden" id="editEventoId">
+      
+      <label>Data do Evento</label>
+      <input type="date" id="dataEv">
+      
+      <label>Pátio Vinculado</label>
+      <select id="patioEv" style="padding: 10px; border-radius: 10px;"></select>
+
+      <label>Nome do Evento</label>
+      <input type="text" id="nomeEv" placeholder="Ex: Show de Rock">
+
+      <label>Local do Evento</label>
+      <input type="text" id="localEv" placeholder="Ex: Arena Principal">
+
+      <label>Horário</label>
+      <input type="time" id="horaEv">
+
+      <button class="btn-save" onclick="salvarEvento()" style="background: linear-gradient(90deg, #E93D8B, #F1951C); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 15px;">Salvar Evento</button>
+      <button onclick="fecharModalEvento()" style="background: #666; color: white; border: none; padding: 10px; border-radius: 10px; margin-top: 10px; cursor: pointer; width: 100%;">Cancelar</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../config.js"></script>
+  <script src="gestao.js"></script>
+</body>
+</html>

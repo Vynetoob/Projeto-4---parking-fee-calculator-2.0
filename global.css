@@ -1,0 +1,117 @@
+/* 1. FONTES E CONFIGURAÇÕES GERAIS */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
+
+html, body {
+    height: 100vh;
+    overflow: hidden; /* TRAVA O SCROLL DA PÁGINA TODA */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* ESTILIZAÇÃO DO SCROLLBAR (Aparecerá apenas nas listas) */
+::-webkit-scrollbar {
+     width: 8px; 
+}
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05); 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: #3B2457;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #E93D8B;
+}
+
+body {
+    width: 100%;
+    background: linear-gradient(135deg, #381064, #A5215F, #b05601);
+    background-size: 200% 200%;
+    animation: grad 10s infinite;
+    padding-top: 70px; /* Espaço da Navbar */
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes grad {
+    0%, 100% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+}
+
+/* 3. BARRA DE NAVEGAÇÃO SUPERIOR */
+.navbar {
+    width: 100%;
+    height: 70px;
+    background: rgba(242, 235, 232, 0.98);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    width: 100%;
+}
+
+.nav-logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #3B2457;
+    text-decoration: none;
+}
+
+.nav-links { display: flex; gap: 15px; align-items: center; }
+
+.nav-item {
+    text-decoration: none;
+    color: #3B2457;
+    font-weight: 700;
+    padding: 8px 15px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: #3B2457;
+    color: white;
+}
+
+/* BOTÕES GERAIS */
+.btn-calc, .btn-main, .btn-save {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(90deg, #E93D8B, #F1951C);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-logout {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}

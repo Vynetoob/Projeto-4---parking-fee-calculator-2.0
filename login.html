@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Administrativo</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">🚗 Plano Smart Park</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="card" style="margin-top: 50px;">
+            <h1>Acesso Restrito</h1>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">Identifique-se para acessar as configurações.</p>
+            
+            <div class="input-group">
+                <label>E-mail</label>
+                <input type="email" id="emailLogin" placeholder="admin@smartpark.com">
+            </div>
+            <div class="input-group">
+                <label>Senha</label>
+                <input type="password" id="senhaLogin" placeholder="******">
+            </div>
+
+            <button class="btn-main" onclick="realizarLogin()">Entrar no Painel</button>
+            <div id="erroLogin" style="color: #ff4757; text-align: center; margin-top: 15px; display: none; font-weight: bold;">
+                E-mail ou senha incorretos!
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script>
+        async function realizarLogin() {
+            const email = document.getElementById('emailLogin').value;
+            const password = document.getElementById('senhaLogin').value;
+            const erroDiv = document.getElementById('erroLogin');
+
+            const { data, error } = await window.supabase.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) {
+                erroDiv.style.display = 'block';
+            } else {
+                window.location.href = 'gestao/gestao.html';
+            }
+        }
+    </script>
+</body>
+</html>

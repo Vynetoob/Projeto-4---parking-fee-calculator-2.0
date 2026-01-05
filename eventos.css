@@ -1,0 +1,162 @@
+/* eventos.css - Design Centralizado e Destaque */
+
+.eventos-wrapper {
+    width: 100%;
+    max-width: 850px; /* Impede que os eventos estiquem na tela toda */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* DESTAQUE DO CABEÇALHO (Resolve o problema do fundo) */
+.eventos-header {
+    background: rgba(242, 235, 232, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 40px 20px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.eventos-header h1 {
+    color: #3B2457;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.eventos-header p {
+    color: #555;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* LISTAGEM DE EVENTOS */
+.eventos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.evento-card {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.evento-card:hover {
+    transform: translateY(-5px);
+}
+
+/* QUADRADO DA DATA */
+.data-box {
+    background: #3B2457;
+    color: white;
+    min-width: 75px;
+    height: 75px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.data-box .dia { font-size: 1.8rem; font-weight: bold; line-height: 1; }
+.data-box .mes { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; opacity: 0.9; }
+
+/* INFORMAÇÕES */
+.evento-info {
+    flex: 1;
+}
+
+.evento-info h3 {
+    color: #3B2457;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.evento-detalhes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.badge-patio {
+    background: #A5215F;
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+/* BOTÃO COPIAR */
+.btn-copy-evento {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.btn-copy-evento:hover { background: #0056b3; }
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+    .evento-card { flex-direction: column; text-align: center; }
+    .evento-detalhes { justify-content: center; }
+}
+
+.main-container {
+    height: calc(100vh - 70px); /* Altura total menos a Navbar */
+    overflow-y: auto; /* ATIVA O SCROLL AQUI */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    
+    /* Garante que o scrollbar use o estilo que definimos no global */
+    scrollbar-width: thin;
+}
+
+/* ESTILIZAÇÃO DO SCROLLBAR ESPECÍFICO DESTA PÁGINA */
+.main-container::-webkit-scrollbar {
+    width: 8px;
+}
+.main-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+.main-container::-webkit-scrollbar-thumb {
+    background: #3B2457;
+    border-radius: 10px;
+}
+.main-container::-webkit-scrollbar-thumb:hover {
+    background: #E93D8B;
+}
+
+/* CONTAINER DOS EVENTOS */
+.eventos-wrapper {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 0 20px 50px 20px; /* Espaço extra no fundo para não colar no chão */
+}
